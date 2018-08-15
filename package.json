@@ -1,0 +1,18 @@
+{
+  "name": "blocket-spy",
+  "version": "1.0.0",
+  "description": "This tool watches Blocket.se for new listings matching the specified criteria and posts an OS notification when something new is found.",
+  "main": "index.js",
+  "repository": "https://github.com/init-ninja/blocket-spy.git",
+  "author": "Pritin Tyagaraj <pritin@live.com>",
+  "license": "MIT",
+  "private": false,
+  "dependencies": {
+    "commander": "^2.17.1",
+    "node-notifier": "^5.2.1",
+    "puppeteer": "^1.7.0"
+  },
+  "devDependencies": {
+    "standard": "^11.0.1"
+  }
+}
