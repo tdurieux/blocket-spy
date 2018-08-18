@@ -13,10 +13,15 @@ Unsophisticated website-scraping implementations like this project are susceptib
 2. Install NPM (Node Package Manager) from https://www.npmjs.com/get-npm
 
 ### Installing
-`npm install -g blocket-spy`
+```
+npm install -g blocket-spy
+```
 
 ### Usage
-Run `blocket-spy` to see all available options. As a bare minimum, the search page URL (after you've applied all your filters) should be provided like this: `blocket-spy -u https://www.blocket.se/bostad/uthyres/stockholm?sort=&ss=&se=&ros=&roe=&bs=3&be=&mre=&q=&q=&q=&is=1&save_search=1&l=0&md=th&f=p&f=c&f=b`
+Run `blocket-spy` to see all available options. As a bare minimum, the search page URL (after you've applied all your filters) should be provided like this:
+```
+blocket-spy -u https://www.blocket.se/bostad/uthyres/stockholm?sort=&ss=&se=&ros=&roe=&bs=3&be=&mre=&q=&q=&q=&is=1&save_search=1&l=0&md=th&f=p&f=c&f=b
+```
 
 1. Open https://www.blocket.se, and click on 'Bostad' and then on 'Uthyres'
 2. Select your filters (such as number of rooms, price range)
