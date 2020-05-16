@@ -39,14 +39,14 @@ async function handleResults(results) {
   }
   return newResults;
 }
-const spy = async (interval) => {
+const spy = (interval) => {
   console.log(
     chalk.yellow.bold(
       `\n==== Waiting to poll again in ${interval} minutes ====`
     )
   );
   reportStep("😴");
-  setTimeout(() => {
+  setTimeout(async () => {
     console.log(chalk.yellow.bold("\n==== Fetching search results ===="));
     const results = await parseSearchResults({ url: URL });
     handleResults(results);
