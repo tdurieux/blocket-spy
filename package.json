@@ -1,25 +1,24 @@
 {
   "name": "blocket-spy",
-  "version": "0.1.3",
+  "version": "1.0.0",
   "description": "This tool watches Blocket.se for new listings matching the specified criteria and posts an OS notification when something new is found.",
   "main": "index.js",
-  "bin": "./lib/cli.js",
-  "repository": "https://github.com/init-ninja/blocket-spy.git",
+  "bin": "./index.js",
+  "repository": "https://github.com/tdurieux/blocket-spy.git",
   "author": "Pritin Tyagaraj <pritin@live.com>",
   "license": "MIT",
   "private": false,
   "scripts": {
-    "build": "rm -rf lib && babel src --out-dir lib",
-    "start": "node index.js",
-    "link": "npm run build && npm link"
+    "start": "node index.js"
   },
   "dependencies": {
     "chalk": "^2.4.1",
+    "express": "^4.17.1",
     "jsonfile": "^4.0.0",
-    "node-notifier": "^5.2.1",
+    "node-notifier": "^7.0.0",
     "open": "0.0.5",
     "ora": "^3.0.0",
-    "puppeteer": "^1.7.0",
+    "puppeteer": "^3.0.4",
     "yargs": "^12.0.1"
   },
   "devDependencies": {

@@ -14,18 +14,16 @@ Unsophisticated website-scraping implementations like this project are susceptib
 
 ### Installing
 ```
-npm install -g blocket-spy
+npm install blocket-spy
 ```
 
 ### Usage
 Run `blocket-spy` to see all available options. As a bare minimum, the search page URL (after you've applied all your filters) should be provided like this:
 ```
-blocket-spy -u https://www.blocket.se/bostad/uthyres/stockholm?sort=&ss=&se=&ros=&roe=&bs=3&be=&mre=&q=&q=&q=&is=1&save_search=1&l=0&md=th&f=p&f=c&f=b
+npm start
 ```
 
-1. Open https://www.blocket.se, and click on 'Bostad' and then on 'Uthyres'
-2. Select your filters (such as number of rooms, price range)
-3. Copy the address from your browser's address bar and use it as the `-u` option to `blocket-spy`
+Open https://localhost:3000, and click on 'Bostad' and then on 'Uthyres'
 
 ### Limitations
 Currently supports spying only on apartments for rent (Bostad / Uthyres), and not other asset types such as second hand goods.

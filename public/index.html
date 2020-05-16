@@ -1,0 +1,247 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en" ng-app="jdbl-website" ng-controller="mainController">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Better - Blocket</title>
+
+    <!-- CSS -->
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+      crossorigin="anonymous"
+    />
+
+    <link rel="stylesheet" href="style/style.css" />
+
+    <!-- JS -->
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.6.6/angular.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.6.6/angular-animate.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.6.6/angular-touch.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.6.6/angular-route.js"></script>
+
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.min.js"
+      crossorigin="anonymous"
+    ></script>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+      integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+      integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+      crossorigin="anonymous"
+    ></script>
+    <script src="//cdn.jsdelivr.net/npm/angu-fixed-header-table@1.2.1/angu-fixed-header-table.min.js"></script>
+    <script src="//overset.github.io/javascript-natural-sort/naturalSort.js"></script>
+    <script src="http://maps.google.com/maps/api/js?key=AIzaSyD7cXFeELzEMQ1cUlfGf3YwoOdOF-4Z2e0"></script>
+    <!-- <script src="http://maps.google.com/maps/api/js"></script> -->
+    <script src="https://rawgit.com/allenhwkim/angularjs-google-maps/master/build/scripts/ng-map.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/hlg-angular-lazy-img@1.2.0/release/angular-lazy-img.min.js"></script>
+
+    <script src="script/app.js"></script>
+  </head>
+  <body keypress-events>
+    <div id="wrapper">
+      <div id="filters" class="row">
+        <div class="input-group input-group-sm mb-3 col">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="inputGroup-sizing-sm">From</span>
+          </div>
+          <input
+            type="number"
+            class="form-control"
+            ng-model="filters.from"
+            aria-label="Sizing example input"
+            aria-describedby="inputGroup-sizing-sm"
+          />
+          <div class="input-group-append">
+            <span class="input-group-text">kr</span>
+          </div>
+        </div>
+        <div class="input-group input-group-sm mb-3 col">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="inputGroup-sizing-sm">To</span>
+          </div>
+          <input
+            type="number"
+            class="form-control"
+            ng-model="filters.to"
+            aria-label="Sizing example input"
+            aria-describedby="inputGroup-sizing-sm"
+          />
+          <div class="input-group-append">
+            <span class="input-group-text">kr</span>
+          </div>
+        </div>
+
+        <div class="input-group input-group-sm mb-3 col">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="inputGroup-sizing-sm">Room</span>
+          </div>
+          <input
+            type="number"
+            class="form-control"
+            ng-model="filters.room"
+            aria-label="Sizing example input"
+            aria-describedby="inputGroup-sizing-sm"
+          />
+        </div>
+
+        <div class="input-group input-group-sm mb-3 col">
+          <div class="input-group-prepend">
+            <div class="input-group-text">
+              <input
+                type="checkbox"
+                aria-label="Filter shared flat"
+                ng-model="filters.shared"
+              />
+            </div>
+          </div>
+
+          <input type="text" class="form-control" disabled value="Shared" />
+        </div>
+        <div class="input-group input-group-sm mb-3 col">
+          <div class="input-group-prepend">
+            <div class="input-group-text">
+              <input
+                type="checkbox"
+                aria-label="Filter flat for student"
+                ng-model="filters.student"
+              />
+            </div>
+          </div>
+
+          <input type="text" class="form-control" disabled value="Student" />
+        </div>
+        <div class="col">
+          <button class="btn-sm btn-light" ng-click="getAds()">Filter</button>
+        </div>
+      </div>
+      <div id="page-wrapper" class="container-fluid row">
+        <div id="ads" class="col-sm scrollable px-2">
+          <div
+            class="ad row"
+            style="width: 100%;"
+            ng-repeat="ad in ads | orderBy:sortType:sortReverse"
+            ng-click="openAd(ad)"
+            ng-class="{active: currentAd.id==ad.id}"
+            ng-controller="adController"
+          >
+            <section
+              class="carousel col-5"
+              class="ad-img"
+              ng-carousel
+              ng-if="ad.uploads.length"
+            >
+              <ul>
+                <li
+                  ng-repeat="up in ad.uploads"
+                  ng-class="{active: $index==curSlide}"
+                >
+                  <img
+                    src="https://bostad.blocket.se/assets/04a7dbf8c74f15001c88e7e83f9b4a00.home-placeholder-blocket.png"
+                    lazy-img="{{up.url}}"
+                    alt="{{up.title}}"
+                  />
+                </li>
+              </ul>
+              <div class="prev-button" ng-click="curSlide=curSlide-1">&lt;</div>
+              <div class="next-button" ng-click="curSlide=curSlide+1">&gt;</div>
+            </section>
+            <div class="ad-body col">
+              <div class="traits">
+                <span class="roomCount"
+                  >{{ad.roomCount}} room<span aria-hidden="true">
+                    ·
+                  </span></span
+                >
+                <span class="squareMeters"
+                  >{{ad.squareMeters}}m²<span aria-hidden="true">
+                    ·
+                  </span></span
+                >
+                <span class="shared" ng-if="ad.shared"
+                  >shared<span aria-hidden="true"> · </span></span
+                >
+                <span class="studentHome" ng-if="ad.studentHome"
+                  >student<span aria-hidden="true"> · </span></span
+                >
+                <span class="tenantCount" ng-if="ad.tenantCount"
+                  >{{ad.tenantCount}} people<span aria-hidden="true">
+                    ·
+                  </span></span
+                >
+                <span class="trait" ng-repeat="trait in ad.traits"
+                  >{{trait.name.replace("_", ' ')}}<span aria-hidden="true">
+                    ·
+                  </span></span
+                >
+                <span class="from">
+                  from {{ad.duration.start | duration}}
+                  <span aria-hidden="true">·</span>
+                </span>
+                <span class="to">to {{ad.duration.end | duration}}</span>
+              </div>
+              <div class="stat">
+                <span class="applicationCount"
+                  >{{ad.applicationCount}} applications
+                  <span aria-hidden="true">
+                    ·
+                  </span></span
+                >
+                <span class="inContactCount"
+                  >{{ad.inContactCount}} in contacts
+                  <span aria-hidden="true">
+                    ·
+                  </span></span
+                >
+                <span class="declinedCount"
+                  >{{ad.declinedCount}} declined
+                  <span aria-hidden="true">
+                    ·
+                  </span></span
+                >
+                <span class="matchingCount">{{ad.matchingCount}} matching</span>
+              </div>
+              <a href="{{ad.links.en}}" target="__blank" class="btn btn-light">
+                Apply
+              </a>
+              <button
+                ng-click="showDescription=!showDescription"
+                class="btn btn-light"
+              >
+                Show Description
+              </button>
+              <button ng-click="hide(ad)" class="btn btn-light">
+                Hide
+              </button>
+              <div class="price">{{ad.rent | number}} kr</div>
+              <div class="date">{{ad.publishedAt | date:'medium'}}</div>
+            </div>
+            <p class="description" ng-show="showDescription">{{ad.description.trim()}}</p>
+          </div>
+        </div>
+        <div class="col-6 map">
+          <ng-map
+            class="card-img-top"
+            zoom="10"
+            center="[{{ads[0].location.latitude}}, {{ads[0].location.longitude}}]"
+            style="height: 100%; width: 100%;"
+          >
+            <marker
+              ng-if="currentAd"
+              position="[{{currentAd.location.latitude}}, {{currentAd.location.longitude}}]"
+            />
+            <control name="overviewMap" opened="false" />
+          </ng-map>
+        </div>
+      </div>
+      <!-- /#page-wrapper -->
+    </div>
+  </body>
+</html>

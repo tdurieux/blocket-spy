@@ -1,39 +1,59 @@
-const chalk = require('chalk')
-const filterSearchResults = require('./scripts/filter-results-by-timestamp')
-const jsonfile = require('jsonfile')
-const notify = require('./scripts/notify')
-const parseSearchResults = require('./scripts/parse-search-results')
-const reportStep = require('./utils/report-step')
+const chalk = require("chalk");
+const jsonfile = require("jsonfile");
+const parseSearchResults = require("./scripts/parse-search-results");
+const reportStep = require("./utils/report-step");
 
-const LAST_RUN_DATA_FILE = '/tmp/.blocket-spy-last-run'
+const URL =
+  "https://bostad.blocket.se/hitta-bostad/?lat=59.3311075&lng=59.3311075&searchString=Klarabergsviadukten%2092%2C%20111%2064%20Stockholm%2C%20Sweden&minRoomCount=1";
 
-const spy = async ({ url, interval }) => {
-  console.log(chalk.yellow.bold('\n==== Fetching search results ===='))
-  const results = await parseSearchResults({ url: url })
-
-  console.log(chalk.yellow.bold('\n==== Filtering out results ===='))
-  const lastRunData = jsonfile.readFileSync(LAST_RUN_DATA_FILE, { throws: false })
-  const lastCheckedListingTimestamp = lastRunData
-    ? lastRunData.timestamp
-    : new Date('2018-01-01 00:00:00')
-  const filteredResults = filterSearchResults(results, lastCheckedListingTimestamp)
-  jsonfile.writeFileSync(LAST_RUN_DATA_FILE, { timestamp: new Date() },  { throws: false })
-
-  console.log(chalk.yellow.bold('\n==== Wrapping up ===='))
-  reportStep('Desktop notification...')
-  if (filteredResults.length > 0) {
-    reportStep('Desktop notification... sent', true)
-    notify({ results: filteredResults, url })
-  } else {
-    reportStep('Desktop notification... not sent (nothing new found)', true)
+(async () => {
+  for (let page = 1; page <= 5; page++) {
+    const url = URL + "&page=" + page;
+    const results = await parseSearchResults({ url: url });
+    await handleResults(results);
   }
+})();
 
-  console.log(chalk.yellow.bold(`\n==== Waiting to poll again in ${interval} minutes ====`))
-  reportStep('😴')
-  setTimeout(() => {
-    reportStep('😴', true)
-    spy({ url, interval })
-  }, interval * 60 * 1000)
+async function handleResults(results) {
+  reportStep(chalk.yellow.bold("\n==== Handling out results ===="), true);
+  const newResults = [];
+  for (let i in results) {
+    let ad = results[i];
+    const stored = jsonfile.readFileSync("ads/" + ad.id + ".json", {
+      throws: false,
+    });
+    if (stored != null) {
+      ad = stored;
+    }
+    if (!ad.description) {
+      const r = await parseSearchResults({
+        url:
+          "https://bostad.blocket.se/rent/apartment/radsvagen-huddinge/" +
+          ad.id,
+      });
+      for (let a of r) {
+        jsonfile.writeFileSync("ads/" + a.id + ".json", a, { throws: false });
+        newResults.push(a);
+      }
+    }
+  }
+  return newResults;
 }
+const spy = async (interval) => {
+  console.log(chalk.yellow.bold("\n==== Fetching search results ===="));
+  const results = await parseSearchResults({ url: URL });
+  handleResults(results);
 
-module.exports = spy
+  console.log(
+    chalk.yellow.bold(
+      `\n==== Waiting to poll again in ${interval} minutes ====`
+    )
+  );
+  reportStep("😴");
+  setTimeout(() => {
+    reportStep("😴", true);
+    spy(interval);
+  }, interval * 60 * 1000);
+};
+
+module.exports = spy;
