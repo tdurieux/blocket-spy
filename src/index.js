@@ -40,10 +40,6 @@ async function handleResults(results) {
   return newResults;
 }
 const spy = async (interval) => {
-  console.log(chalk.yellow.bold("\n==== Fetching search results ===="));
-  const results = await parseSearchResults({ url: URL });
-  handleResults(results);
-
   console.log(
     chalk.yellow.bold(
       `\n==== Waiting to poll again in ${interval} minutes ====`
@@ -51,6 +47,9 @@ const spy = async (interval) => {
   );
   reportStep("😴");
   setTimeout(() => {
+    console.log(chalk.yellow.bold("\n==== Fetching search results ===="));
+    const results = await parseSearchResults({ url: URL });
+    handleResults(results);
     reportStep("😴", true);
     spy(interval);
   }, interval * 60 * 1000);
