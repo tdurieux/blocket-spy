@@ -11,6 +11,7 @@ spy(5)
 
 app.use(express.static("public"));
 
+const adsDate = {}
 app.get("/api/ads", function (req, res) {
   const filters = {
     student: false,
@@ -32,23 +33,26 @@ app.get("/api/ads", function (req, res) {
       if (f.indexOf(".json") == -1) {
         continue;
       }
+      if (adsDate[f] !== undefined) {
+        if (adsDate[f] < lastWeek) {
+          continue;
+        }
+      }
       const r = JSON.parse(fs.readFileSync("ads/" + f));
-      if (new Date(r.updatedAt) < lastWeek) {
+      adsDate[f] = new Date(r.publishedAt)
+      if (adsDate[f] < lastWeek) {
         continue;
       }
-      if (r.rent < filters.from) {
+      if (r.rent < filters.from || r.rent > filters.to) {
         continue;
       }
-      if (r.rent > filters.to) {
+      if (r.roomCount < filters.room) {
         continue;
       }
       if (r.studentHome && !filters.student) {
         continue;
       }
       if (r.shared && !filters.shared) {
-        continue;
-      }
-      if (r.roomCount < filters.room) {
         continue;
       }
       output.push(r);
