@@ -10,14 +10,6 @@ const port = 3000;
 spy(5)
 
 app.use(express.static("public"));
-app.get("/api/ad/:id", async function (req, res) {
-  const results = await parseSearchResults({
-    url:
-      "https://bostad.blocket.se/rent/apartment/radsvagen-huddinge/" +
-      req.params.id,
-  });
-  res.json(results);
-});
 
 app.get("/api/ads", function (req, res) {
   const filters = {

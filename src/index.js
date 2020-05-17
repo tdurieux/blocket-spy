@@ -15,7 +15,6 @@ const URL =
 })();
 
 async function handleResults(results) {
-  reportStep(chalk.yellow.bold("\n==== Handling out results ===="), true);
   const newResults = [];
   for (let i in results) {
     let ad = results[i];
@@ -23,6 +22,11 @@ async function handleResults(results) {
       throws: false,
     });
     if (stored != null) {
+      stored.applicationCount = ad.applicationCount;
+      stored.inContactCount = ad.inContactCount;
+      stored.declinedCount = ad.declinedCount;
+      stored.matchingCount = ad.matchingCount;
+      jsonfile.writeFileSync("ads/" + stored.id + ".json", stored, { throws: false });
       ad = stored;
     }
     if (!ad.description) {
@@ -41,13 +45,11 @@ async function handleResults(results) {
 }
 const spy = (interval) => {
   console.log(
-    chalk.yellow.bold(
-      `\n==== Waiting to poll again in ${interval} minutes ====`
-    )
+    chalk.yellow.bold(`==== Waiting to poll again in ${interval} minutes ====`)
   );
   reportStep("😴");
   setTimeout(async () => {
-    console.log(chalk.yellow.bold("\n==== Fetching search results ===="));
+    console.log(chalk.yellow.bold("==== Fetching search results ===="));
     const results = await parseSearchResults({ url: URL });
     handleResults(results);
     reportStep("😴", true);
