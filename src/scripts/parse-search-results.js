@@ -12,6 +12,7 @@ module.exports = async ({ url }) => {
     });
   }
 
+
   reportStep(`Navigating to ${url}...`);
   const page = await browser.newPage();
   await page.goto(url);
@@ -19,6 +20,6 @@ module.exports = async ({ url }) => {
   const results = await page.evaluate(() => {
     return App.context.dispatcher.stores.HomesStore.homes;
   });
-  
+  await page.close();
   return results;
 };
