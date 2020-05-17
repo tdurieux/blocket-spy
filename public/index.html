@@ -47,89 +47,98 @@
   </head>
   <body keypress-events>
     <div id="wrapper">
-      <div id="filters" class="row">
-        <div class="input-group input-group-sm mb-3 col">
-          <div class="input-group-prepend">
-            <span class="input-group-text" id="inputGroup-sizing-sm">From</span>
+      <div id="filters" class="shadow">
+        <form submit="getAds();return false;" class="row px-4 py-2">
+          <div class="input-group input-group-sm col">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="inputGroup-sizing-sm">From</span>
+            </div>
+            <input
+              type="number"
+              class="form-control"
+              ng-model="filters.from"
+              aria-label="Sizing example input"
+              aria-describedby="inputGroup-sizing-sm"
+            />
+            <div class="input-group-append">
+              <span class="input-group-text">kr</span>
+            </div>
           </div>
-          <input
-            type="number"
-            class="form-control"
-            ng-model="filters.from"
-            aria-label="Sizing example input"
-            aria-describedby="inputGroup-sizing-sm"
-          />
-          <div class="input-group-append">
-            <span class="input-group-text">kr</span>
-          </div>
-        </div>
-        <div class="input-group input-group-sm mb-3 col">
-          <div class="input-group-prepend">
-            <span class="input-group-text" id="inputGroup-sizing-sm">To</span>
-          </div>
-          <input
-            type="number"
-            class="form-control"
-            ng-model="filters.to"
-            aria-label="Sizing example input"
-            aria-describedby="inputGroup-sizing-sm"
-          />
-          <div class="input-group-append">
-            <span class="input-group-text">kr</span>
-          </div>
-        </div>
-
-        <div class="input-group input-group-sm mb-3 col">
-          <div class="input-group-prepend">
-            <span class="input-group-text" id="inputGroup-sizing-sm">Room</span>
-          </div>
-          <input
-            type="number"
-            class="form-control"
-            ng-model="filters.room"
-            aria-label="Sizing example input"
-            aria-describedby="inputGroup-sizing-sm"
-          />
-        </div>
-
-        <div class="input-group input-group-sm mb-3 col">
-          <div class="input-group-prepend">
-            <div class="input-group-text">
-              <input
-                type="checkbox"
-                aria-label="Filter shared flat"
-                ng-model="filters.shared"
-              />
+          <div class="input-group input-group-sm col">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="inputGroup-sizing-sm">To</span>
+            </div>
+            <input
+              type="number"
+              class="form-control"
+              ng-model="filters.to"
+              aria-label="Sizing example input"
+              aria-describedby="inputGroup-sizing-sm"
+            />
+            <div class="input-group-append">
+              <span class="input-group-text">kr</span>
             </div>
           </div>
 
-          <input type="text" class="form-control" disabled value="Shared" />
-        </div>
-        <div class="input-group input-group-sm mb-3 col">
-          <div class="input-group-prepend">
-            <div class="input-group-text">
-              <input
-                type="checkbox"
-                aria-label="Filter flat for student"
-                ng-model="filters.student"
-              />
+          <div class="input-group input-group-sm col">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="inputGroup-sizing-sm">Room</span>
             </div>
+            <input
+              type="number"
+              class="form-control"
+              ng-model="filters.room"
+              aria-label="Sizing example input"
+              aria-describedby="inputGroup-sizing-sm"
+            />
           </div>
 
-          <input type="text" class="form-control" disabled value="Student" />
-        </div>
-        <div class="col">
-          <button class="btn-sm btn-light" ng-click="getAds()">Filter</button>
-        </div>
+          <div class="input-group input-group-sm col">
+            <div class="input-group-prepend">
+              <div class="input-group-text">
+                <input
+                  type="checkbox"
+                  aria-label="Filter shared flat"
+                  ng-model="filters.shared"
+                />
+              </div>
+            </div>
+
+            <input type="text" class="form-control" disabled value="Shared" />
+          </div>
+          <div class="input-group input-group-sm col">
+            <div class="input-group-prepend">
+              <div class="input-group-text">
+                <input
+                  type="checkbox"
+                  aria-label="Filter flat for student"
+                  ng-model="filters.student"
+                />
+              </div>
+            </div>
+
+            <input type="text" class="form-control" disabled value="Student" />
+          </div>
+          <div class="col">
+            <button class="btn-sm btn-block" ng-click="getAds()" ng-disabled="loading">Filter</button>
+          </div>
+        </form>
       </div>
       <div id="page-wrapper" class="container-fluid row">
         <div id="ads" class="col-sm scrollable px-2">
+          <div ng-if="loading" class="loading d-flex justify-content-center">
+            <div class="spinner-border m-5" role="status">
+              <span class="sr-only">Loading...</span>
+            </div>
+          </div>
+          <div class="mx-0" ng-show="!loading">
+            {{ads.length}} results 7 days.
+          </div>
           <div
             class="ad row"
-            style="width: 100%;"
             ng-repeat="ad in ads | orderBy:sortType:sortReverse"
             ng-click="openAd(ad)"
-            ng-class="{active: currentAd.id==ad.id}"
+            ng-class="{active: currentAd.id==ad.id, shadow: currentAd.id==ad.id}"
             ng-controller="adController"
           >
             <section
@@ -208,16 +217,16 @@
                 >
                 <span class="matchingCount">{{ad.matchingCount}} matching</span>
               </div>
-              <a href="{{ad.links.en}}" target="__blank" class="btn btn-light">
+              <a href="{{ad.links.en}}" target="__blank" class="btn btn-secondary">
                 Apply
               </a>
               <button
                 ng-click="showDescription=!showDescription"
-                class="btn btn-light"
+                class="btn btn-secondary"
               >
                 Show Description
               </button>
-              <button ng-click="hide(ad)" class="btn btn-light">
+              <button ng-click="hide(ad)" class="btn btn-secondary">
                 Hide
               </button>
               <div class="price">{{ad.rent | number}} kr</div>

@@ -45,6 +45,7 @@ angular
     $scope.showDescription = false;
   })
   .controller("mainController", function ($scope, $http) {
+    $scope.loading = true;
     $scope.sortType = ["publishedAt"]; // set the default sort type
     $scope.sortReverse = true;
     $scope.filters = {
@@ -86,6 +87,7 @@ angular
     // create the list of sushi rolls
     $scope.ads = [];
     $scope.getAds = function () {
+      $scope.loading = true;
       let paramter = "?";
       for (let filter in $scope.filters) {
         if ($scope.filters[filter]) {
@@ -104,6 +106,7 @@ angular
           }
         }
         $scope.openAd($scope.ads[0]);
+        $scope.loading = false;
       });
     };
     $scope.getAds();
@@ -113,8 +116,14 @@ angular
     };
     $scope.$on("keypress:39", function () {
       $scope.$apply(function () {
-        const index = $scope.ads.indexOf($scope.currentAd);
-        $scope.openAd($scope.ads[index + 1]);
+        const index = $scope.ads.indexOf($scope.currentAd) + 1;
+        if (index < 0) {
+          index = 0
+        }
+        if (index >= $scope.ads.length) {
+          index = $scope.ads.length - 1
+        } 
+        $scope.openAd($scope.ads[index]);
         setTimeout(() => {
           const elem = document.querySelector(".ad.active");
           if (elem) {
@@ -125,8 +134,14 @@ angular
     });
     $scope.$on("keypress:37", function () {
       $scope.$apply(function () {
-        const index = $scope.ads.indexOf($scope.currentAd);
-        $scope.openAd($scope.ads[index - 1]);
+        const index = $scope.ads.indexOf($scope.currentAd) - 1;
+        if (index < 0) {
+          index = 0
+        }
+        if (index >= $scope.ads.length) {
+          index = $scope.ads.length - 1
+        } 
+        $scope.openAd($scope.ads[index]);
         setTimeout(() => {
           const elem = document.querySelector(".ad.active");
           if (elem) {
