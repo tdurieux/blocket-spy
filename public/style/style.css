@@ -21,7 +21,7 @@ body,
 }
 #page-wrapper {
   margin-top: -47px;
-  padding-top: 50px;
+  padding-top: 47px;
 }
 .container-fluid {
   margin: 0;
@@ -46,7 +46,16 @@ a {
 #ads {
   position: relative;
   padding: 0 20px;
+  padding-top: 5px;
   min-height: 100%;
+  background: #f7f7f7;
+}
+.results {
+  background: #ffffff;
+  text-align: center;
+  padding: 7px;
+  margin-bottom: 6px;
+  font-weight: 500;
 }
 .loading {
   position: relative;
@@ -64,7 +73,7 @@ a {
 }
 
 .ad.active {
-  background: #f7f7f7;
+  background: #ffffff;
 }
 .ad .ad-body {
   position: relative;
@@ -76,12 +85,12 @@ a {
   font-size: 0.6em;
 }
 .ad .ad-body .traits {
-  min-height: 130px;
+  min-height: 125px;
 }
 .ad .date {
   position: absolute;
   left: 7px;
-  bottom: 0px;
+  bottom: 2px;
   font-size: 0.6em;
 }
 .ad .price {

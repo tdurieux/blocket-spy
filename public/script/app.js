@@ -25,14 +25,13 @@ angular
     },
   ])
   .filter("duration", [
-    "$filter",
-    function ($filter) {
+    function () {
       return function (input) {
         if (input.ufn) {
-          return "no end";
+          return "'until further'";
         }
         if (input.asap) {
-          return "as soon as possible";
+          return "'immediate'";
         }
         if (input.optimal) {
           return new Date(input.optimal).toLocaleDateString();

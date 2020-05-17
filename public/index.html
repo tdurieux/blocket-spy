@@ -120,7 +120,9 @@
             <input type="text" class="form-control" disabled value="Student" />
           </div>
           <div class="col">
-            <button class="btn-sm btn-block" ng-click="getAds()" ng-disabled="loading">Filter</button>
+            <button class="btn-sm btn-block" ng-click="getAds()" ng-disabled="loading">
+              <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true" ng-show="loading"></span> Filter
+            </button>
           </div>
         </form>
       </div>
@@ -131,8 +133,8 @@
               <span class="sr-only">Loading...</span>
             </div>
           </div>
-          <div class="mx-0" ng-show="!loading">
-            {{ads.length}} results 7 days.
+          <div class="mx-0 results" ng-show="!loading">
+            {{ads.length}} results from the last 7 days.
           </div>
           <div
             class="ad row"
@@ -191,10 +193,10 @@
                   </span></span
                 >
                 <span class="from">
-                  from {{ad.duration.start | duration}}
+                  move in {{ad.duration.start | duration}}
                   <span aria-hidden="true">·</span>
                 </span>
-                <span class="to">to {{ad.duration.end | duration}}</span>
+                <span class="to">move out {{ad.duration.end | duration}}</span>
               </div>
               <div class="stat">
                 <span class="applicationCount"
@@ -230,7 +232,7 @@
                 Hide
               </button>
               <div class="price">{{ad.rent | number}} kr</div>
-              <div class="date">{{ad.publishedAt | date:'medium'}}</div>
+              <div class="date">Published {{ad.publishedAt | date:'medium'}}</div>
             </div>
             <p class="description" ng-show="showDescription">{{ad.description.trim()}}</p>
           </div>
