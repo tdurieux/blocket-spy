@@ -100,7 +100,6 @@ angular
         $scope.ads = response.data;
         for (let ad of [...$scope.ads]) {
           if ($scope.hidden.indexOf(ad.id) > -1) {
-            console.log("remove" , ad)
             removeAd(ad);
           }
         }
@@ -113,9 +112,18 @@ angular
     $scope.openAd = function (ad) {
       $scope.currentAd = ad;
     };
+    function scroll() {
+      setTimeout(() => {
+        const elem = document.querySelector(".ad.active");
+        if (elem) {
+          const adsE = document.getElementById("ads");
+          adsE.scrollTop = elem.offsetTop - adsE.clientHeight/2 + elem.clientHeight/2;
+        }
+      }, 10);
+    }
     $scope.$on("keypress:39", function () {
       $scope.$apply(function () {
-        const index = $scope.ads.indexOf($scope.currentAd) + 1;
+        let index = $scope.ads.indexOf($scope.currentAd) + 1;
         if (index < 0) {
           index = 0
         }
@@ -123,17 +131,12 @@ angular
           index = $scope.ads.length - 1
         } 
         $scope.openAd($scope.ads[index]);
-        setTimeout(() => {
-          const elem = document.querySelector(".ad.active");
-          if (elem) {
-            document.getElementById("ads").scrollTop = elem.offsetTop;
-          }
-        }, 50);
+        scroll();
       });
     });
     $scope.$on("keypress:37", function () {
       $scope.$apply(function () {
-        const index = $scope.ads.indexOf($scope.currentAd) - 1;
+        let index = $scope.ads.indexOf($scope.currentAd) - 1;
         if (index < 0) {
           index = 0
         }
@@ -141,12 +144,7 @@ angular
           index = $scope.ads.length - 1
         } 
         $scope.openAd($scope.ads[index]);
-        setTimeout(() => {
-          const elem = document.querySelector(".ad.active");
-          if (elem) {
-            document.getElementById("ads").scrollTop = elem.offsetTop;
-          }
-        }, 50);
+        scroll();
       });
     });
   })
