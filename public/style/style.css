@@ -43,7 +43,7 @@ a {
   margin: 0;
   padding: 0;
 }
-#ads {
+#homes {
   position: relative;
   padding: 0 20px;
   padding-top: 5px;
@@ -65,41 +65,41 @@ a {
   font-weight: bold;
   text-align: center;
 }
-.ad {
+.home {
   position: relative;
   margin: 0px 0;
   padding: 10px 0;
   border-bottom: 1px solid #ddd;
 }
 
-.ad.active {
+.home.active {
   background: #ffffff;
 }
-.ad .ad-body {
+.home .home-body {
   position: relative;
   height: 200px;
   padding: 0px 7px;
   font-size: 1em;
 }
-.ad .ad-body .stat {
+.home .home-body .stat {
   font-size: 0.6em;
 }
-.ad .ad-body .traits {
+.home .home-body .traits {
   min-height: 125px;
 }
-.ad .date {
+.home .date {
   position: absolute;
   left: 7px;
   bottom: 2px;
   font-size: 0.6em;
 }
-.ad .price {
+.home .price {
   position: absolute;
   right: 5px;
   bottom: 0;
   font-weight: bold;
 }
-.ad .description {
+.home .description {
   white-space: pre;
   display: block;
   width: 100%;

@@ -40,7 +40,7 @@ angular
       };
     },
   ])
-  .controller("adController", function ($scope) {
+  .controller("homeController", function ($scope) {
     $scope.showDescription = false;
   })
   .controller("mainController", function ($scope, $http) {
@@ -57,12 +57,12 @@ angular
     if (localStorage.getItem("blocket.hidden")) {
       $scope.hidden = JSON.parse(localStorage.getItem("blocket.hidden"));
     }
-    $scope.hide = function (ad) {
+    $scope.hide = function (home) {
       setTimeout(() => {
         $scope.$broadcast("keypress:39");
-        removeAd(ad);
+        removeHome(home);
       }, 1);
-      $scope.hidden.push(ad.id);
+      $scope.hidden.push(home.id);
       localStorage.setItem("blocket.hidden", JSON.stringify($scope.hidden));
     };
     if (localStorage.getItem("blocket.filters")) {
@@ -76,16 +76,16 @@ angular
       true
     );
 
-    function removeAd(ad) {
-      const index = $scope.ads.indexOf(ad);
+    function removeHome(home) {
+      const index = $scope.homes.indexOf(home);
       if (index > -1) {
-        $scope.ads.splice(index, 1);
+        $scope.homes.splice(index, 1);
       }
     }
 
     // create the list of sushi rolls
-    $scope.ads = [];
-    $scope.getAds = function () {
+    $scope.homes = [];
+    $scope.getHomes = function () {
       $scope.loading = true;
       let paramter = "?";
       for (let filter in $scope.filters) {
@@ -97,53 +97,53 @@ angular
         }
       }
       $http.get("/api/homes" + paramter).then(function (response) {
-        $scope.ads = response.data;
-        for (let ad of [...$scope.ads]) {
-          if ($scope.hidden.indexOf(ad.id) > -1) {
-            removeAd(ad);
+        $scope.homes = response.data;
+        for (let home of [...$scope.homes]) {
+          if ($scope.hidden.indexOf(home.id) > -1) {
+            removeHome(home);
           }
         }
-        $scope.openAd($scope.ads[0]);
+        $scope.openHome($scope.homes[0]);
         $scope.loading = false;
       });
     };
-    $scope.getAds();
+    $scope.getHomes();
 
-    $scope.openAd = function (ad) {
-      $scope.currentAd = ad;
+    $scope.openHome = function (home) {
+      $scope.currentHome = home;
     };
     function scroll() {
       setTimeout(() => {
-        const elem = document.querySelector(".ad.active");
+        const elem = document.querySelector(".home.active");
         if (elem) {
-          const adsE = document.getElementById("ads");
-          adsE.scrollTop = elem.offsetTop - adsE.clientHeight/2 + elem.clientHeight/2;
+          const homesE = document.getElementById("homes");
+          homesE.scrollTop = elem.offsetTop - homesE.clientHeight/2 + elem.clientHeight/2;
         }
       }, 10);
     }
     $scope.$on("keypress:39", function () {
       $scope.$apply(function () {
-        let index = $scope.ads.indexOf($scope.currentAd) + 1;
+        let index = $scope.homes.indexOf($scope.currentHome) + 1;
         if (index < 0) {
           index = 0
         }
-        if (index >= $scope.ads.length) {
-          index = $scope.ads.length - 1
+        if (index >= $scope.homes.length) {
+          index = $scope.homes.length - 1
         } 
-        $scope.openAd($scope.ads[index]);
+        $scope.openHome($scope.homes[index]);
         scroll();
       });
     });
     $scope.$on("keypress:37", function () {
       $scope.$apply(function () {
-        let index = $scope.ads.indexOf($scope.currentAd) - 1;
+        let index = $scope.homes.indexOf($scope.currentHome) - 1;
         if (index < 0) {
           index = 0
         }
-        if (index >= $scope.ads.length) {
-          index = $scope.ads.length - 1
+        if (index >= $scope.homes.length) {
+          index = $scope.homes.length - 1
         } 
-        $scope.openAd($scope.ads[index]);
+        $scope.openHome($scope.homes[index]);
         scroll();
       });
     });

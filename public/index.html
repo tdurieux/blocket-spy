@@ -48,7 +48,7 @@
   <body keypress-events>
     <div id="wrapper">
       <div id="filters" class="shadow">
-        <form submit="getAds();return false;" class="row px-4 py-2">
+        <form submit="getHomes();return false;" class="row px-4 py-2">
           <div class="input-group input-group-sm col">
             <div class="input-group-prepend">
               <span class="input-group-text" id="inputGroup-sizing-sm">From</span>
@@ -120,42 +120,42 @@
             <input type="text" class="form-control" disabled value="Student" />
           </div>
           <div class="col">
-            <button class="btn-sm btn-block" ng-click="getAds()" ng-disabled="loading">
+            <button class="btn-sm btn-block" ng-click="getHomes()" ng-disabled="loading">
               <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true" ng-show="loading"></span> Filter
             </button>
           </div>
         </form>
       </div>
       <div id="page-wrapper" class="container-fluid row">
-        <div id="ads" class="col-sm scrollable px-2">
+        <div id="homes" class="col-sm scrollable px-2">
           <div ng-if="loading" class="loading d-flex justify-content-center">
             <div class="spinner-border m-5" role="status">
               <span class="sr-only">Loading...</span>
             </div>
           </div>
           <div class="mx-0 results" ng-show="!loading">
-            {{ads.length}} results from the last 7 days.
+            {{homes.length}} results from the last 7 days.
           </div>
           <div
-            class="ad row"
-            ng-repeat="ad in ads | orderBy:sortType:sortReverse"
-            ng-click="openAd(ad)"
-            ng-class="{active: currentAd.id==ad.id, shadow: currentAd.id==ad.id}"
-            ng-controller="adController"
+            class="home row"
+            ng-repeat="home in homes | orderBy:sortType:sortReverse"
+            ng-click="openHome(home)"
+            ng-class="{active: currentHome.id==home.id, shadow: currentHome.id==home.id}"
+            ng-controller="homeController"
           >
             <section
               class="carousel col-5"
-              class="ad-img"
+              class="home-img"
               ng-carousel
-              ng-if="ad.uploads.length"
+              ng-if="home.uploads.length"
             >
               <ul>
                 <li
-                  ng-repeat="up in ad.uploads"
+                  ng-repeat="up in home.uploads"
                   ng-class="{active: $index==curSlide}"
                 >
                   <img
-                    src="https://bostad.blocket.se/assets/04a7dbf8c74f15001c88e7e83f9b4a00.home-placeholder-blocket.png"
+                    src="https://bosthome.blocket.se/assets/04a7dbf8c74f15001c88e7e83f9b4a00.home-placeholder-blocket.png"
                     lazy-img="https://img.qasa.se/unsafe/800x450/smart/{{up.url}}"
                     alt="{{up.title}}"
                   />
@@ -164,62 +164,62 @@
               <div class="prev-button" ng-click="curSlide=curSlide-1">&lt;</div>
               <div class="next-button" ng-click="curSlide=curSlide+1">&gt;</div>
             </section>
-            <div class="ad-body col">
+            <div class="home-body col">
               <div class="traits">
                 <span class="roomCount"
-                  >{{ad.roomCount}} room<span aria-hidden="true">
+                  >{{home.roomCount}} room<span aria-hidden="true">
                     ·
                   </span></span
                 >
                 <span class="squareMeters"
-                  >{{ad.squareMeters}}m²<span aria-hidden="true">
+                  >{{home.squareMeters}}m²<span aria-hidden="true">
                     ·
                   </span></span
                 >
-                <span class="shared" ng-if="ad.shared"
+                <span class="shared" ng-if="home.shared"
                   >shared<span aria-hidden="true"> · </span></span
                 >
-                <span class="studentHome" ng-if="ad.studentHome"
+                <span class="studentHome" ng-if="home.studentHome"
                   >student<span aria-hidden="true"> · </span></span
                 >
-                <span class="tenantCount" ng-if="ad.tenantCount"
-                  >{{ad.tenantCount}} people<span aria-hidden="true">
+                <span class="tenantCount" ng-if="home.tenantCount"
+                  >{{home.tenantCount}} people<span aria-hidden="true">
                     ·
                   </span></span
                 >
-                <span class="trait" ng-repeat="trait in ad.traits"
+                <span class="trait" ng-repeat="trait in home.traits"
                   >{{trait.name.replace("_", ' ')}}<span aria-hidden="true">
                     ·
                   </span></span
                 >
                 <span class="from">
-                  move in {{ad.duration.start | duration}}
+                  move in {{home.duration.start | duration}}
                   <span aria-hidden="true">·</span>
                 </span>
-                <span class="to">move out {{ad.duration.end | duration}}</span>
+                <span class="to">move out {{home.duration.end | duration}}</span>
               </div>
               <div class="stat">
                 <span class="applicationCount"
-                  >{{ad.applicationCount}} applications
+                  >{{home.applicationCount}} applications
                   <span aria-hidden="true">
                     ·
                   </span></span
                 >
                 <span class="inContactCount"
-                  >{{ad.inContactCount}} in contacts
+                  >{{home.inContactCount}} in contacts
                   <span aria-hidden="true">
                     ·
                   </span></span
                 >
                 <span class="declinedCount"
-                  >{{ad.declinedCount}} declined
+                  >{{home.declinedCount}} declined
                   <span aria-hidden="true">
                     ·
                   </span></span
                 >
-                <span class="matchingCount">{{ad.matchingCount}} matching</span>
+                <span class="matchingCount">{{home.matchingCount}} matching</span>
               </div>
-              <a href="{{ad.links.en}}" target="__blank" class="btn btn-secondary">
+              <a href="{{home.links.en}}" target="__blank" class="btn btn-secondary">
                 Apply
               </a>
               <button
@@ -228,25 +228,25 @@
               >
                 Show Description
               </button>
-              <button ng-click="hide(ad)" class="btn btn-secondary">
+              <button ng-click="hide(home)" class="btn btn-secondary">
                 Hide
               </button>
-              <div class="price">{{ad.rent | number}} kr</div>
-              <div class="date">Published {{ad.publishedAt | date:'medium'}}</div>
+              <div class="price">{{home.rent | number}} kr</div>
+              <div class="date">Published {{home.publishedAt | date:'medium'}}</div>
             </div>
-            <p class="description" ng-show="showDescription">{{ad.description.trim()}}</p>
+            <p class="description" ng-show="showDescription">{{home.description.trim()}}</p>
           </div>
         </div>
         <div class="col-6 map">
           <ng-map
             class="card-img-top"
             zoom="10"
-            center="[{{ads[0].location.latitude}}, {{ads[0].location.longitude}}]"
+            center="[{{homes[0].location.latitude}}, {{homes[0].location.longitude}}]"
             style="height: 100%; width: 100%;"
           >
             <marker
-              ng-if="currentAd"
-              position="[{{currentAd.location.latitude}}, {{currentAd.location.longitude}}]"
+              ng-if="currentHome"
+              position="[{{currentHome.location.latitude}}, {{currentHome.location.longitude}}]"
             />
             <control name="overviewMap" opened="false" />
           </ng-map>
