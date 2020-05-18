@@ -327,9 +327,8 @@
                 Published {{home.publishedAt | date:'medium'}}
               </div>
             </div>
-            <p class="description" ng-show="showDescription">
-              {{home.description.trim()}}
-            </p>
+            <p class="description" ng-show="showDescription">{{home.description_en || home.description.trim()}}
+<a href="#" ng-click="translate(home);" ng-show="showDescription && !home.description_en">Translate description</a></p>
           </div>
         </div>
         <div class="col-6 map">

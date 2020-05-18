@@ -1,4 +1,5 @@
-const parseSearchResults = require("./src/scripts/parse-search-results");
+const translate = require('google-translate-open-api').default;
+
 const spy = require("./src/index");
 
 const express = require("express");
@@ -12,6 +13,16 @@ spy(5)
 app.use(express.static("public"));
 
 const adsDate = {}
+app.get("/api/home/:id/translate", async function (req, res) {
+  const r = JSON.parse(fs.readFileSync("ads/" + req.params.id + '.json'));
+  if (r.description_en) {
+    return res.json(r);
+  }
+  const result = await translate(r.description, { to: 'en' });
+  r.description_en = result.data[0];
+  fs.writeFileSync("ads/" + req.params.id + '.json', JSON.stringify(r));
+  return res.json(r);
+})
 app.get("/api/homes", function (req, res) {
   const filters = {
     student: false,

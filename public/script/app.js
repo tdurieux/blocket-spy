@@ -118,6 +118,14 @@ angular
     };
     $scope.getHomes();
 
+    $scope.translate = function (home) {
+      $http.get("/api/home/" + home.id + "/translate").then(function (response) {
+        const index = $scope.homes.indexOf(home);
+        $scope.homes[index].description_en = response.data.description_en;
+      });
+      return false;
+    }
+
     $scope.openHome = function (home) {
       $scope.currentHome = home;
     };
