@@ -28,10 +28,10 @@ angular
     function () {
       return function (input) {
         if (input.ufn) {
-          return "'until further'";
+          return "until further";
         }
         if (input.asap) {
-          return "'immediate'";
+          return "immediate";
         }
         if (input.optimal) {
           return new Date(input.optimal).toLocaleDateString();
@@ -42,6 +42,15 @@ angular
   ])
   .controller("homeController", function ($scope) {
     $scope.showDescription = false;
+
+    $scope.hasTrait = function (traitName, home) {
+      for (let trait of home.traits) {
+        if (trait.name == traitName) {
+          return true;
+        }
+      }
+      return false;
+    }
   })
   .controller("mainController", function ($scope, $http) {
     $scope.loading = true;

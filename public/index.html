@@ -13,6 +13,7 @@
       crossorigin="anonymous"
     />
 
+    <link rel="stylesheet" href="style/icon.css" />
     <link rel="stylesheet" href="style/style.css" />
 
     <!-- JS -->
@@ -51,7 +52,9 @@
         <form submit="getHomes();return false;" class="row px-4 py-2">
           <div class="input-group input-group-sm col">
             <div class="input-group-prepend">
-              <span class="input-group-text" id="inputGroup-sizing-sm">From</span>
+              <span class="input-group-text" id="inputGroup-sizing-sm"
+                >From</span
+              >
             </div>
             <input
               type="number"
@@ -82,7 +85,9 @@
 
           <div class="input-group input-group-sm col">
             <div class="input-group-prepend">
-              <span class="input-group-text" id="inputGroup-sizing-sm">Room</span>
+              <span class="input-group-text" id="inputGroup-sizing-sm"
+                >Room</span
+              >
             </div>
             <input
               type="number"
@@ -120,8 +125,18 @@
             <input type="text" class="form-control" disabled value="Student" />
           </div>
           <div class="col">
-            <button class="btn-sm btn-block" ng-click="getHomes()" ng-disabled="loading">
-              <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true" ng-show="loading"></span> Filter
+            <button
+              class="btn-sm btn-block"
+              ng-click="getHomes()"
+              ng-disabled="loading"
+            >
+              <span
+                class="spinner-grow spinner-grow-sm"
+                role="status"
+                aria-hidden="true"
+                ng-show="loading"
+              ></span>
+              Filter
             </button>
           </div>
         </form>
@@ -161,42 +176,112 @@
                   />
                 </li>
               </ul>
-              <div class="prev-button" ng-click="curSlide=curSlide-1">&lt;</div>
-              <div class="next-button" ng-click="curSlide=curSlide+1">&gt;</div>
+              <div class="prev-button shadow" ng-click="curSlide=curSlide-1">
+                &lt;
+              </div>
+              <div class="next-button shadow" ng-click="curSlide=curSlide+1">
+                &gt;
+              </div>
             </section>
             <div class="home-body col">
               <div class="traits">
-                <span class="roomCount"
-                  >{{home.roomCount}} room<span aria-hidden="true">
-                    ·
-                  </span></span
-                >
-                <span class="squareMeters"
-                  >{{home.squareMeters}}m²<span aria-hidden="true">
-                    ·
-                  </span></span
-                >
-                <span class="shared" ng-if="home.shared"
-                  >shared<span aria-hidden="true"> · </span></span
-                >
-                <span class="studentHome" ng-if="home.studentHome"
-                  >student<span aria-hidden="true"> · </span></span
-                >
-                <span class="tenantCount" ng-if="home.tenantCount"
-                  >{{home.tenantCount}} people<span aria-hidden="true">
-                    ·
-                  </span></span
-                >
-                <span class="trait" ng-repeat="trait in home.traits"
-                  >{{trait.name.replace("_", ' ')}}<span aria-hidden="true">
-                    ·
-                  </span></span
-                >
-                <span class="from">
-                  move in {{home.duration.start | duration}}
-                  <span aria-hidden="true">·</span>
+                <span class="roomCount">
+                  <span class="glyph-icon flaticon-interior-design"></span> {{home.roomCount}} rooms
+                  <span aria-hidden="true"> · </span>
                 </span>
-                <span class="to">move out {{home.duration.end | duration}}</span>
+                <span class="squareMeters">
+                  <span class="glyph-icon flaticon-dimension"></span> {{home.squareMeters}} m²
+                  <span aria-hidden="true">
+                    ·
+                  </span>
+                </span>
+                <span class="tenantCount" ng-if="home.tenantCount">
+                  <span class="glyph-icon flaticon-family"></span>
+                  {{home.tenantCount}}
+                </span>
+                <span class="shared" ng-if="home.shared">
+                  <span aria-hidden="true"> · </span>
+                  <i class="glyph-icon flaticon-share"></i>
+                  shared
+                </span>
+                <span class="studentHome" ng-if="home.studentHome">
+                  <span aria-hidden="true"> · </span>
+                  <i class="glyph-icon flaticon-student"></i>
+                  student
+                </span>
+                <div>
+                  <i class="glyph-icon flaticon-log-in"></i>
+                  {{home.duration.start | duration}}
+                  <span aria-hidden="true"> · </span>
+                  <i class="glyph-icon flaticon-arrows"></i>
+                  {{home.duration.end | duration}}
+                </div>
+              </div>
+              <div class="amenities">
+                <div class="row">
+                  <div class="col">
+                    <i
+                      ng-class="{active: hasTrait('furniture', home)}"
+                      class="glyph-icon flaticon-sofa"
+                    ></i>
+                  </div>
+                  <div class="col">
+                    <i
+                      ng-class="{active: hasTrait('washing_machine', home)}"
+                      class="glyph-icon flaticon-washing-machine"
+                    ></i>
+                  </div>
+                  <div class="col">
+                    <i
+                      ng-class="{active: hasTrait('dish_washer', home)}"
+                      class="glyph-icon flaticon-dishwasher"
+                    ></i>
+                  </div>
+                  <div class="col">
+                    <i
+                      ng-class="{active: hasTrait('shower', home)}"
+                      class="glyph-icon flaticon-shower"
+                    ></i>
+                  </div>
+                  <div class="col">
+                    <i
+                      ng-class="{active: hasTrait('toilet', home)}"
+                      class="glyph-icon flaticon-toilet"
+                    ></i>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col">
+                    <i
+                      ng-class="{active: hasTrait('internet', home)}"
+                      class="glyph-icon flaticon-wifi"
+                    ></i>
+                  </div>
+                  <div class="col">
+                    <i
+                      ng-class="{active: hasTrait('balcony', home)}"
+                      class="glyph-icon flaticon-terrace"
+                    ></i>
+                  </div>
+                  <div class="col">
+                    <i
+                      ng-class="{active: hasTrait('smoker', home)}"
+                      class="glyph-icon flaticon-smoking"
+                    ></i>
+                  </div>
+                  <div class="col">
+                    <i
+                      ng-class="{active: hasTrait('pets', home)}"
+                      class="glyph-icon flaticon-dog"
+                    ></i>
+                  </div>
+                  <div class="col">
+                    <i
+                      ng-class="{active: hasTrait('wheelchair_accessible', home)}"
+                      class="glyph-icon flaticon-wheelchair"
+                    ></i>
+                  </div>
+                </div>
               </div>
               <div class="stat">
                 <span class="applicationCount"
@@ -217,9 +302,15 @@
                     ·
                   </span></span
                 >
-                <span class="matchingCount">{{home.matchingCount}} matching</span>
+                <span class="matchingCount"
+                  >{{home.matchingCount}} matching</span
+                >
               </div>
-              <a href="{{home.links.en}}" target="__blank" class="btn btn-secondary">
+              <a
+                href="{{home.links.en}}"
+                target="__blank"
+                class="btn btn-secondary"
+              >
                 Apply
               </a>
               <button
@@ -232,16 +323,20 @@
                 Hide
               </button>
               <div class="price">{{home.rent | number}} kr</div>
-              <div class="date">Published {{home.publishedAt | date:'medium'}}</div>
+              <div class="date">
+                Published {{home.publishedAt | date:'medium'}}
+              </div>
             </div>
-            <p class="description" ng-show="showDescription">{{home.description.trim()}}</p>
+            <p class="description" ng-show="showDescription">
+              {{home.description.trim()}}
+            </p>
           </div>
         </div>
         <div class="col-6 map">
           <ng-map
             class="card-img-top"
-            zoom="10"
-            center="[{{homes[0].location.latitude}}, {{homes[0].location.longitude}}]"
+            zoom="12"
+            center="[{{currentHome.location.latitude}}, {{currentHome.location.longitude}}]"
             style="height: 100%; width: 100%;"
           >
             <marker

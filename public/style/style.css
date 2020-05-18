@@ -85,7 +85,13 @@ a {
   font-size: 0.6em;
 }
 .home .home-body .traits {
-  min-height: 125px;
+  
+}
+.home .amenities i {
+  opacity: 0.3;
+}
+.home .amenities i.active {
+  opacity: 1;
 }
 .home .date {
   position: absolute;
@@ -126,6 +132,7 @@ a {
   text-align: center;
   line-height: 25px;
   display: none;
+  user-select: none;
 }
 .carousel:hover .prev-button,
 .carousel:hover .next-button {
