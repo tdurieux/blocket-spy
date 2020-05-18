@@ -96,7 +96,7 @@ angular
           paramter += filter + "=" + $scope.filters[filter];
         }
       }
-      $http.get("/api/ads" + paramter).then(function (response) {
+      $http.get("/api/homes" + paramter).then(function (response) {
         $scope.ads = response.data;
         for (let ad of [...$scope.ads]) {
           if ($scope.hidden.indexOf(ad.id) > -1) {

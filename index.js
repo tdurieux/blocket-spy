@@ -12,7 +12,7 @@ spy(5)
 app.use(express.static("public"));
 
 const adsDate = {}
-app.get("/api/ads", function (req, res) {
+app.get("/api/homes", function (req, res) {
   const filters = {
     student: false,
     shard: false,
