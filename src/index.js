@@ -29,7 +29,7 @@ async function handleResults(results) {
       jsonfile.writeFileSync("ads/" + stored.id + ".json", stored, { throws: false });
       ad = stored;
     }
-    if (!ad.description) {
+    if (ad.description !== undefined) {
       const r = await parseSearchResults({
         url:
           "https://bostad.blocket.se/rent/apartment/radsvagen-huddinge/" +
