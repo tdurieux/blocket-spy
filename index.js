@@ -15,7 +15,7 @@ const adsDate = {}
 app.get("/api/homes", function (req, res) {
   const filters = {
     student: false,
-    shard: false,
+    shared: false,
     from: 0,
     to: 999999999,
     room: 0,
@@ -23,6 +23,13 @@ app.get("/api/homes", function (req, res) {
   for (let q in req.query) {
     if (filters[q] !== undefined) {
       filters[q] = req.query[q];
+      if (filters[q] == 'true') {
+        filters[q] = true;
+      } else if (filters[q] == 'false') {
+        filters[q] = false;
+      } else if (!isNaN(filters[q])) {
+        filters[q] = parseInt(filters[q]);
+      }
     }
   }
   const lastWeek = new Date();

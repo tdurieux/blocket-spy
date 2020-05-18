@@ -49,10 +49,9 @@ const spy = (interval) => {
   );
   reportStep("😴");
   setTimeout(async () => {
-    console.log(chalk.yellow.bold("==== Fetching search results ===="));
     const results = await parseSearchResults({ url: URL });
     handleResults(results);
-    reportStep("😴", true);
+    reportStep(`Fetching done`, true);
     spy(interval);
   }, interval * 60 * 1000);
 };
