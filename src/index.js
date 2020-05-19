@@ -7,7 +7,7 @@ const URL =
   "https://bostad.blocket.se/hitta-bostad/?lat=59.3311075&lng=59.3311075&searchString=Klarabergsviadukten%2092%2C%20111%2064%20Stockholm%2C%20Sweden&minRoomCount=1";
 
 (async () => {
-  for (let page = 1; page <= 5; page++) {
+  for (let page = 1; page <= 0; page++) {
     const url = URL + "&page=" + page;
     const results = await parseSearchResults({ url: url });
     await handleResults(results);
@@ -29,7 +29,7 @@ async function handleResults(results) {
       jsonfile.writeFileSync("ads/" + stored.id + ".json", stored, { throws: false });
       ad = stored;
     }
-    if (ad.description !== undefined) {
+    if (ad.description === undefined) {
       const r = await parseSearchResults({
         url:
           "https://bostad.blocket.se/rent/apartment/radsvagen-huddinge/" +
@@ -50,7 +50,7 @@ const spy = (interval) => {
   reportStep("😴");
   setTimeout(async () => {
     const results = await parseSearchResults({ url: URL });
-    handleResults(results);
+    await handleResults(results);
     reportStep(`Fetching done`, true);
     spy(interval);
   }, interval * 60 * 1000);
