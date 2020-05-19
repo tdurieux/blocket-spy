@@ -7,7 +7,7 @@ const URL =
   "https://bostad.blocket.se/hitta-bostad/?lat=59.3311075&lng=59.3311075&searchString=Klarabergsviadukten%2092%2C%20111%2064%20Stockholm%2C%20Sweden&minRoomCount=1";
 
 (async () => {
-  for (let page = 1; page <= 0; page++) {
+  for (let page = 1; page <= 15; page++) {
     const url = URL + "&page=" + page;
     const results = await parseSearchResults({ url: url });
     await handleResults(results);
