@@ -1,5 +1,5 @@
 angular
-  .module("jdbl-website", ["ngRoute", "ngMap", "ngTouch", "angularLazyImg"])
+  .module("jdbl-website", ["ngRoute", "ngMap", "angularLazyImg"])
   .config([
     "lazyImgConfigProvider",
     function (lazyImgConfigProvider) {
@@ -76,6 +76,12 @@ angular
     };
     if (localStorage.getItem("blocket.filters")) {
       $scope.filters = JSON.parse(localStorage.getItem("blocket.filters"));
+      if ($scope.filters.moveIn) {
+        $scope.filters.moveIn = new Date($scope.filters.moveIn)
+      }
+      if ($scope.filters.moveOut) {
+        $scope.filters.moveOut = new Date($scope.filters.moveOut)
+      }
     }
     $scope.$watch(
       "filters",
@@ -111,6 +117,7 @@ angular
           if ($scope.hidden.indexOf(home.id) > -1) {
             removeHome(home);
           }
+          home.publishedAt = moment(home.publishedAt)
         }
         $scope.openHome($scope.homes[0]);
         $scope.loading = false;

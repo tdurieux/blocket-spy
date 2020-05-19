@@ -30,6 +30,8 @@ app.get("/api/homes", function (req, res) {
     from: 0,
     to: 999999999,
     room: 0,
+    moveIn: null,
+    moveOut: null
   };
   for (let q in req.query) {
     if (filters[q] !== undefined) {
@@ -42,6 +44,13 @@ app.get("/api/homes", function (req, res) {
         filters[q] = parseInt(filters[q]);
       }
     }
+  }
+  if (filters.moveIn) {
+    filters.moveIn = new Date(filters.moveIn)
+    filters.moveIn = Math.max(new Date(), filters.moveIn);
+  }
+  if (filters.moveOut) {
+    filters.moveOut = new Date(filters.moveOut)
   }
   const lastWeek = new Date();
   lastWeek.setDate(lastWeek.getDate() - 7);
@@ -72,6 +81,28 @@ app.get("/api/homes", function (req, res) {
       }
       if (r.shared && !filters.shared) {
         continue;
+      }
+      if (filters.moveIn) {
+        let date = null;
+        if (r.duration.start.optimal) {
+          date = new Date(r.duration.start.optimal)
+        } else if (r.duration.start.asap) {
+          date = new Date()
+        }
+        if (date != null && filters.moveIn < date) {
+          continue;
+        }
+      }
+      if (filters.moveOut) {
+        let date = null;
+        if (r.duration.end.optimal) {
+          date = new Date(r.duration.end.optimal)
+        } else if (r.duration.end.asap) {
+          date = new Date()
+        }
+        if (date != null && filters.moveOut > date) {
+          continue;
+        }
       }
       output.push(r);
     }
