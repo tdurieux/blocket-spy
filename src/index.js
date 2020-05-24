@@ -37,7 +37,7 @@ async function handleResults(results) {
           ad.id,
       });
       for (let a of r) {
-        if (!fs.existsSync("ads/" + a.id + ".json")) {
+        if (!fs.existsSync("ads/" + a.id + ".json") || a.user !== undefined) {
           jsonfile.writeFileSync("ads/" + a.id + ".json", a, { throws: false });
           newResults.push(a);
         }        
