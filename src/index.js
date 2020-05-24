@@ -1,4 +1,5 @@
 const chalk = require("chalk");
+const fs = require("fs");
 const jsonfile = require("jsonfile");
 const parseSearchResults = require("./scripts/parse-search-results");
 const reportStep = require("./utils/report-step");
@@ -29,15 +30,17 @@ async function handleResults(results) {
       jsonfile.writeFileSync("ads/" + stored.id + ".json", stored, { throws: false });
       ad = stored;
     }
-    if (ad.description === undefined) {
+    if (ad.description === undefined || ad.user === undefined) {
       const r = await parseSearchResults({
         url:
           "https://bostad.blocket.se/rent/apartment/radsvagen-huddinge/" +
           ad.id,
       });
       for (let a of r) {
-        jsonfile.writeFileSync("ads/" + a.id + ".json", a, { throws: false });
-        newResults.push(a);
+        if (!fs.existsSync("ads/" + a.id + ".json")) {
+          jsonfile.writeFileSync("ads/" + a.id + ".json", a, { throws: false });
+          newResults.push(a);
+        }        
       }
     }
   }

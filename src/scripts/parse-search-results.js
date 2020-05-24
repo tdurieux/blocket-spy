@@ -18,7 +18,18 @@ module.exports = async ({ url }) => {
   await page.goto(url);
   
   const results = await page.evaluate(() => {
-    return App.context.dispatcher.stores.HomesStore.homes;
+    const homes = App.context.dispatcher.stores.HomesStore.homes;
+    if (App.context.dispatcher.stores.UsersStore) {
+      const users = App.context.dispatcher.stores.UsersStore.users;
+      for (let home of homes) {
+        for (let user of users) {
+          if (user.uid == home.userUid) {
+            home.user = user;
+          }
+        }
+      }
+    }
+    return homes;
   });
   await page.close();
   return results;

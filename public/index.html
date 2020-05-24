@@ -352,9 +352,12 @@
               <button ng-click="hide(home)" class="btn btn-secondary">
                 Hide
               </button>
+              <a href="https://www.hitta.se/s%C3%B6k?vad={{home.location.route}} {{home.location.streetNumber}} {{home.location.locality}} {{home.location.postalCode}}" target="__blank" class="btn btn-secondary">
+                Hitta
+              </a>
               <div class="price">{{home.rent | number}} kr</div>
               <div class="date">
-                Published {{home.publishedAt.fromNow()}}
+                Published {{home.publishedAt.fromNow()}} by {{home.user.firstName}} {{home.user.phoneNumberMasked}} {{home.user.idNumberMasked}}
               </div>
             </div>
             <p class="description" ng-show="showDescription">{{home.description_en || home.description.trim()}}
