@@ -4,14 +4,14 @@ const bot = new TelegramBot(process.env.TELEGRAM_TOKEN, { polling: false });
 let chatId = -438649481;
 
 function sendMessage(message, ad) {
-  if (ad.uploads.length > 0) {
-    bot.sendPhoto(chatId, ad.uploads[0].url, {
-      caption: message.substring(0, 1023),
-      parse_mode: "markdown",
-    });
-  } else {
-    bot.sendMessage(chatId, message, { parse_mode: "markdown" });
-  }
+  const address = `${ad.location.route} ${ad.location.streetNumber} ${ad.location.locality} ${ad.location.postalCode}`;
+  const localtionUrl = `https://maps.googleapis.com/maps/api/staticmap?center=Stockholm&markers=${encodeURIComponent(
+    address
+  )}&zoom=12&size=600x600&key=AIzaSyA3kg7YWugGl1lTXmAmaBGPNhDW9pEh5bo`;
+  bot.sendPhoto(chatId, localtionUrl, {
+    caption: message.substring(0, 1023),
+    parse_mode: "markdown",
+  });
 }
 
 module.exports = ({ results, url }) => {
