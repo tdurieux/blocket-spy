@@ -3,9 +3,11 @@ const fs = require("fs");
 const jsonfile = require("jsonfile");
 const parseSearchResults = require("./scripts/parse-search-results");
 const reportStep = require("./utils/report-step");
+const notify = require("./scripts/notify");
+const translate = require("google-translate-open-api").default;
 
 const URL =
-  "https://bostad.blocket.se/hitta-bostad/?lat=59.3311075&lng=59.3311075&searchString=Klarabergsviadukten%2092%2C%20111%2064%20Stockholm%2C%20Sweden&minRoomCount=1";
+  "https://bostad.blocket.se/find-home/?areaId=56&maxRent=&maxRentCurrency=SEK&minRentalLength=&maxRentalLength=&minRoomCount=&minSquareMeters=&moveInEarliest=&moveOutEarliest=&moveOutLatest=&sharedHomeOk=&furnished=&hasPets=&requiresWheelchairAccessible=&searchString=Stockholm%2C%20Stockholms%20kommun&homeType=&lat=59.3251172&lng=18.0710935&safeRental=false";
 
 (async () => {
   for (let page = 1; page <= 15; page++) {
@@ -27,7 +29,9 @@ async function handleResults(results) {
       stored.inContactCount = ad.inContactCount;
       stored.declinedCount = ad.declinedCount;
       stored.matchingCount = ad.matchingCount;
-      jsonfile.writeFileSync("ads/" + stored.id + ".json", stored, { throws: false });
+      jsonfile.writeFileSync("ads/" + stored.id + ".json", stored, {
+        throws: false,
+      });
       ad = stored;
     }
     if (ad.description === undefined || ad.user === undefined) {
@@ -38,11 +42,26 @@ async function handleResults(results) {
       });
       for (let a of r) {
         if (!fs.existsSync("ads/" + a.id + ".json") || a.user !== undefined) {
+          if (a.rent <= 12000 && a.shared == false) {
+            try {
+              const result = await translate(a.description, { to: "en" });
+              a.description_en = result.data[0];
+            } catch (error) {
+              console.log(error);
+            }
+            notify({
+              results: [a],
+              url: "https://bostad.blocket.se/listings/" + r.id + "/",
+            });
+          }
+
           jsonfile.writeFileSync("ads/" + a.id + ".json", a, { throws: false });
           newResults.push(a);
-        }        
+        }
       }
     }
+  }
+  for (let r of newResults) {
   }
   return newResults;
 }

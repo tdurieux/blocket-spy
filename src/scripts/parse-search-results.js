@@ -35,6 +35,6 @@ module.exports = async ({ url }) => {
     return results;
   } catch (error) {
     await page.close();
-    return []
+    return [];
   }
 };
