@@ -4,9 +4,9 @@ let chatId = -438649481;
 
 function sendMessage(message, ad) {
   const address = `${ad.location.route} ${ad.location.streetNumber} ${ad.location.locality} ${ad.location.postalCode}`;
-  const localtionUrl = `https://maps.googleapis.com/maps/api/staticmap?center=Stockholm&markers=${encodeURIComponent(
+  const localtionUrl = `https://maps.googleapis.com/maps/api/staticmap?markers=${encodeURIComponent(
     address
-  )}&zoom=12&size=600x600&key=AIzaSyA3kg7YWugGl1lTXmAmaBGPNhDW9pEh5bo`;
+  )}&markers=KTH+Entre&zoom=12&size=600x600&key=AIzaSyA3kg7YWugGl1lTXmAmaBGPNhDW9pEh5bo`;
   bot.sendPhoto(chatId, localtionUrl, {
     caption: message.substring(0, 1023),
     parse_mode: "markdown",

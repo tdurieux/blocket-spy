@@ -17,8 +17,8 @@ app.get("/api/home/:id/translate", async function (req, res) {
     return res.json(r);
   }
   try {
-    const result = await translate(a.description, { to: "en", from: "sv"});
-    a.description_en = result.text;
+    const result = await translate(r.description, { to: "en", from: "sv"});
+    r.description_en = result.text;
 
     fs.writeFileSync("ads/" + req.params.id + ".json", JSON.stringify(r));
     return res.json(r);
