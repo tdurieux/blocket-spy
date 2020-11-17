@@ -4,7 +4,7 @@ const jsonfile = require("jsonfile");
 const parseSearchResults = require("./scripts/parse-search-results");
 const reportStep = require("./utils/report-step");
 const notify = require("./scripts/notify");
-const translate = require("google-translate-open-api").default;
+const translate = require('@vitalets/google-translate-api');
 
 const URL =
   "https://bostad.blocket.se/find-home/?areaId=56&maxRent=&maxRentCurrency=SEK&minRentalLength=&maxRentalLength=&minRoomCount=&minSquareMeters=&moveInEarliest=&moveOutEarliest=&moveOutLatest=&sharedHomeOk=&furnished=&hasPets=&requiresWheelchairAccessible=&searchString=Stockholm%2C%20Stockholms%20kommun&homeType=&lat=59.3251172&lng=18.0710935&safeRental=false";
@@ -44,8 +44,8 @@ async function handleResults(results) {
         if (!fs.existsSync("ads/" + a.id + ".json") || a.user !== undefined) {
           if (a.rent <= 12000 && a.shared == false) {
             try {
-              const result = await translate(a.description, { to: "en" });
-              a.description_en = result.data[0];
+              const result = await translate(a.description, { to: "en", from: "sv" });
+              a.description_en = result.text;
             } catch (error) {
               console.log(error);
             }

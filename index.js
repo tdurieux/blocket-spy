@@ -1,5 +1,4 @@
-const translate = require("google-translate-open-api").default;
-
+const translate = require("@vitalets/google-translate-api");
 const spy = require("./src/index");
 
 const express = require("express");
@@ -17,10 +16,15 @@ app.get("/api/home/:id/translate", async function (req, res) {
   if (r.description_en) {
     return res.json(r);
   }
-  const result = await translate(r.description, { to: "en" });
-  r.description_en = result.data[0];
-  fs.writeFileSync("ads/" + req.params.id + ".json", JSON.stringify(r));
-  return res.json(r);
+  try {
+    const result = await translate(a.description, { to: "en", from: "sv"});
+    a.description_en = result.text;
+
+    fs.writeFileSync("ads/" + req.params.id + ".json", JSON.stringify(r));
+    return res.json(r);
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
 });
 app.get("/api/homes", function (req, res) {
   const filters = {
