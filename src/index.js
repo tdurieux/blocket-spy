@@ -51,7 +51,7 @@ async function handleResults(results) {
             }
             notify({
               results: [a],
-              url: "https://bostad.blocket.se/listings/" + r.id + "/",
+              url: "https://bostad.blocket.se/listings/" + a.id + "/",
             });
           }
 
