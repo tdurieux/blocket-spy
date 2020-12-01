@@ -6,9 +6,6 @@ const reportStep = require("./utils/report-step");
 const notify = require("./scripts/notify");
 const translate = require("@vitalets/google-translate-api");
 
-const URL =
-  "https://bostad.blocket.se/p2/en/find-home/?searchAreas[]=Stockholm%3BStockholms%20kommun%3B25929985";
-
 (async () => {
   const results = await parse.getLatest();
   await handleResults(results);
@@ -21,17 +18,24 @@ async function handleResults(results) {
     const stored = jsonfile.readFileSync("ads/" + ad.id + ".json", {
       throws: false,
     });
-    if (stored != null && ad.matchingCount) {
-      stored.applicationCount = ad.applicationCount;
-      stored.inContactCount = ad.inContactCount;
-      stored.declinedCount = ad.declinedCount;
-      stored.matchingCount = ad.matchingCount;
-      jsonfile.writeFileSync("ads/" + stored.id + ".json", stored, {
-        throws: false,
-      });
+    if (stored != null) {
+      if (ad.matchingCount !== undefined) {
+        stored.applicationCount = ad.applicationCount;
+        stored.inContactCount = ad.inContactCount;
+        stored.declinedCount = ad.declinedCount;
+        stored.matchingCount = ad.matchingCount;
+
+        jsonfile.writeFileSync("ads/" + ad.id + ".json", stored, {
+          throws: false,
+        });
+      }
       ad = stored;
     }
-    if (ad.description === undefined || ad.user === undefined || stored.applicationCount == null) {
+    if (
+      ad.description === undefined ||
+      ad.user === undefined ||
+      (stored !== undefined && stored.applicationCount == null)
+    ) {
       const r = await parse.extractDetails({
         url:
           "https://bostad.blocket.se/rent/apartment/radsvagen-huddinge/" +
