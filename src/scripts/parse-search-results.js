@@ -44,7 +44,7 @@ module.exports.getLatest = async function () {
   const query = {
     operationName: "HomeSearchQuery",
     variables: {
-      first: 100,
+      first: 50,
       platform: "blocket",
       searchParams: {
         homeType: [],

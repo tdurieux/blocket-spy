@@ -21,7 +21,7 @@ async function handleResults(results) {
     const stored = jsonfile.readFileSync("ads/" + ad.id + ".json", {
       throws: false,
     });
-    if (stored != null) {
+    if (stored != null && ad.matchingCount) {
       stored.applicationCount = ad.applicationCount;
       stored.inContactCount = ad.inContactCount;
       stored.declinedCount = ad.declinedCount;
@@ -31,7 +31,7 @@ async function handleResults(results) {
       });
       ad = stored;
     }
-    if (ad.description === undefined || ad.user === undefined) {
+    if (ad.description === undefined || ad.user === undefined || stored.applicationCount == null) {
       const r = await parse.extractDetails({
         url:
           "https://bostad.blocket.se/rent/apartment/radsvagen-huddinge/" +
@@ -60,8 +60,6 @@ async function handleResults(results) {
         }
       }
     }
-  }
-  for (let r of newResults) {
   }
   return newResults;
 }
