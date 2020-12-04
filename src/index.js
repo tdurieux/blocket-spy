@@ -58,10 +58,14 @@ async function handleResults(results) {
             } catch (error) {
               console.log(error);
             }
-            notify({
-              results: [a],
-              url: "https://bostad.blocket.se/listings/" + a.id + "/",
-            });
+            try {
+              notify({
+                results: [a],
+                url: "https://bostad.blocket.se/listings/" + a.id + "/",
+              });
+            } catch (error) {
+              console.error(error);
+            }
           }
 
           jsonfile.writeFileSync("ads/" + a.id + ".json", a, { throws: false });
