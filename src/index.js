@@ -19,17 +19,22 @@ async function handleResults(results) {
       throws: false,
     });
     if (stored != null) {
-      if (ad.matchingCount !== undefined) {
-        stored.applicationCount = ad.applicationCount;
-        stored.inContactCount = ad.inContactCount;
-        stored.declinedCount = ad.declinedCount;
-        stored.matchingCount = ad.matchingCount;
+      if (ad.applicationStats !== undefined) {
+        stored.applicationCount = ad.applicationStats.applicationCount;
+        stored.inContactCount = ad.applicationStats.inContactCount;
+        stored.declinedCount = ad.applicationStats.declinedCount;
+        stored.matchingCount = ad.applicationStats.matchingCount;
 
         jsonfile.writeFileSync("ads/" + ad.id + ".json", stored, {
           throws: false,
         });
       }
       ad = stored;
+    } else {
+      ad.applicationCount = ad.applicationStats.applicationCount;
+      ad.inContactCount = ad.applicationStats.inContactCount;
+      ad.declinedCount = ad.applicationStats.declinedCount;
+      ad.matchingCount = ad.applicationStats.matchingCount;
     }
     if (
       ad.description === undefined ||
