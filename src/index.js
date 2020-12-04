@@ -48,7 +48,7 @@ async function handleResults(results) {
       });
       for (let a of r) {
         if (!fs.existsSync("ads/" + a.id + ".json") || a.user !== undefined) {
-          if (a.rent <= 12000 && a.shared == false) {
+          if (a.rent <= 12000 && a.shared == false && a.squareMeters >= 30) {
             try {
               const result = await translate(a.description, {
                 to: "en",
